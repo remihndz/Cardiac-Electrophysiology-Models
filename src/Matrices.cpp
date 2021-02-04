@@ -54,6 +54,7 @@ std::vector<double> operator-(const std::vector<double>& a, const std::vector<do
 
 
 
+// Matrix constructors
 
 Matrix::Matrix(const unsigned int rows,
 	       const unsigned int cols, const double& init)
@@ -74,6 +75,49 @@ Matrix::Matrix(const Matrix& rhs)
   this->m_cols = rhs.m_cols;
 }
 
+
+Matrix::Matrix(const std::vector<double> vals,
+	       const std::vector<int> diags,
+	       const unsigned int rows,
+	       const unsigned int cols)
+{
+  if (vals.size() != diags.size())
+    {
+      throw std::invalid_argument("The number of value differs from the number of diagonals given!\n");
+    }
+
+  this->m_rows = rows;
+  this->m_cols = cols;
+  this->m_mat.resize(rows);
+
+  std::vector<std::vector<double>>::iterator row;
+  for (row = this->m_mat.begin(); row != this->m_mat.end(); row++)
+    {
+      row->resize(cols, 0.0);
+    }
+
+  for (int i = 0; i < rows; i++)
+    {
+      
+      for (unsigned int k = 0; k < diags.size(); k++)
+	{
+	  double val = vals[k];
+	  int      l = diags[k];
+	  
+	  if (l >= 0 && i+l < cols)
+	    {
+	      this->m_mat[i][i+l] = val;
+	    }
+
+	  else if (l < 0 && i+l >= 0)
+	    {
+	      this->m_mat[i][i+l] = val;
+	    }
+	}
+    }
+}
+
+
 Matrix& Matrix::operator=(const Matrix& rhs)
 {  
   if (&rhs == this)
@@ -92,7 +136,8 @@ Matrix& Matrix::operator=(const Matrix& rhs)
     {
       *rowB = *rowA;
       rowB++;
-    }   
+    }
+  return *this;
 }
   
  
@@ -182,13 +227,14 @@ std::vector<double> Matrix::operator*(const std::vector<double> &rhs)
   for (row = this->m_mat.begin(); row != this->m_mat.end(); row++)
     {
       v[i] = (*row) * rhs;
+      i++;
     }
 
   return v;
 }
 
 // Access individual elements
-double Matrix::operator()(const unsigned int i, const unsigned int j)
+double * Matrix::operator()(const unsigned int i, const unsigned int j)
 {
   if (i >= m_rows || j >= m_cols)
     {
@@ -196,20 +242,43 @@ double Matrix::operator()(const unsigned int i, const unsigned int j)
 		<< ") and (i,j)=("<<i<<","<<j<<'\n';
       throw std::invalid_argument("Out of bound in Matrix(i,j).\n"); 
     }
-  return m_mat[i][j];
+  return &m_mat[i][j];
 }
 
 
-void MoveRows(const std::vector<int> &I, const std::vector<int> &J)
+void Matrix::SwapRows(std::vector<unsigned int> &I, std::vector<unsigned int> &J)
 {
-  std::cout << "NOT IMPLEMENTED YET\n";
+  if (I.size() != J.size())
+    {
+      throw std::invalid_argument("The number of indexes in I and J don't match!\n");
+    }
+
+  // Remove potential duplicates
+  std::vector<unsigned int>::iterator itr = I.begin();
+  std::unordered_set<unsigned int> s;
+
+  for (auto curr = I.begin(); curr != I.end(); ++curr) {
+    if (s.insert(*curr).second)
+      *itr++ = *curr;
+  }
+
+  I.erase(itr, I.end());
+  
+  itr = J.begin();
+  for (auto curr = J.begin(); curr != J.end(); ++curr) {
+    if (s.insert(*curr).second)
+      *itr++ = *curr;
+  }
+  
+  J.erase(itr, J.end());
+
+  for (unsigned int k = 0; k<I.size(); k++)
+    {
+      unsigned int i = I[k], j = J[k];
+      this->m_mat[i].swap(this->m_mat[j]);
+    }
 }
 
-void CreateDiagonalMatrix(const std::vector<double> vals,
-			  const std::vector<int> diags)
-{
-  std::cout << "NOT IMPLEMENTED YET\n";
-}
 
 
 #endif

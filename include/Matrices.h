@@ -3,9 +3,11 @@
 
 #include <vector>
 #include <iostream>
+#include <fstream>
+#include <string>
 #include <algorithm>
 #include <stdexcept>
-
+#include <unordered_set>
 
 std::vector<double> operator+(const std::vector<double>& a, const std::vector<double>& b);
 std::vector<double> operator-(const std::vector<double>& a, const std::vector<double>& b);
@@ -19,17 +21,24 @@ class Matrix
   std::vector<std::vector<double>> m_mat;
   unsigned int m_rows;
   unsigned int m_cols;
-  
-  void MoveRows(const std::vector<int> &I, const std::vector<int> &J);
-  void CreateDiagonalMatrix(const std::vector<double> vals,
-			    const std::vector<int> diags);
-  
+
+  void SwapRows(std::vector<unsigned int> &I,
+		std::vector<unsigned int> &J);
+
+  /* Creates a multidiagonal matrix of size rowsxcols
+     with value vals[i] on the diagonal diags[i]
+  */
+  Matrix(const std::vector<double> vals,
+	 const std::vector<int> diags,
+	 const unsigned int rows,
+	 const unsigned int cols);
+  // Construct a rowsxcols matrix  with value init everywhere
   Matrix(unsigned int rows, unsigned int cols, const double& init);
+  // Initiate matrix using another matrix
   Matrix(const Matrix& A);
 
-  Matrix& operator=(const Matrix& rhs);
-  
   // Matrix/Matrix operations
+  Matrix& operator=(const Matrix& rhs);
   Matrix operator+(const Matrix &rhs);
   Matrix operator-(const Matrix &rhs);
 
@@ -41,7 +50,8 @@ class Matrix
   std::vector<double> operator*(const std::vector<double> &rhs);
 
   // Access individual elements
-  double operator()(const unsigned int row, const unsigned int col);
+  double * operator()(const unsigned int row, const unsigned int col);
+  
 };
 
 #endif
