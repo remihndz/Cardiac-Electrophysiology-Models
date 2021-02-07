@@ -22,9 +22,6 @@ class Matrix
   unsigned int m_rows;
   unsigned int m_cols;
 
-  void SwapRows(std::vector<unsigned int> &I,
-		std::vector<unsigned int> &J);
-
   /* Creates a multidiagonal matrix of size rowsxcols
      with value vals[i] on the diagonal diags[i]
   */
@@ -48,9 +45,13 @@ class Matrix
 		   
   // Matrix/Vector operations
   std::vector<double> operator*(const std::vector<double> &rhs);
+  std::vector<double> operator*(const std::vector<double> &rhs) const;
 
   // Access individual elements
-  double * operator()(const unsigned int row, const unsigned int col);
+  double* operator()(const unsigned int row, const unsigned int col);
+
+  void SwapRows(std::vector<unsigned int> &I,
+		std::vector<unsigned int> &J);
   
 };
 

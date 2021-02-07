@@ -29,6 +29,7 @@ class CSR
 
   // Sparse matrix/vector product
   std::vector<double> operator*(const std::vector<double> &rhs);
+  std::vector<double> operator*(const std::vector<double> &rhs) const;
 
   int get_row() const;
   int get_col() const;

@@ -192,6 +192,31 @@ std::vector<double> CSR::operator*(const std::vector<double> &rhs)
   return res;  
 }
 
+std::vector<double> CSR::operator*(const std::vector<double> &rhs) const
+{
+
+  int n = this->m_row, m = this->m_col;
+  if (m != rhs.size())
+    throw std::invalid_argument("Shape mismatch between CSR and vector!");
+
+  std::vector<double> res(n,0.0);
+  std::vector<unsigned int>::const_iterator col = m_cols.begin();
+  std::vector<double>::const_iterator val = m_vals.begin();
+
+  for (int i = 0; i < n; i++)
+    {
+      int nnz = m_rows[i+1] - m_rows[i];
+
+      for (int j = 0; j < nnz; j++)
+	{
+	  res[i] += (*val) * rhs[*col];
+	  col++;
+	  val++;
+	}
+    }
+  return res;  
+}
+
 	 
 int CSR::get_row() const
 {

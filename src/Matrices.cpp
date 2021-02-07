@@ -97,8 +97,7 @@ Matrix::Matrix(const std::vector<double> vals,
     }
 
   for (int i = 0; i < rows; i++)
-    {
-      
+    {      
       for (unsigned int k = 0; k < diags.size(); k++)
 	{
 	  double val = vals[k];
@@ -213,6 +212,27 @@ Matrix Matrix::operator/(const double c)
 
 // Matrix/Vector operations
 std::vector<double> Matrix::operator*(const std::vector<double> &rhs)
+{
+  if (m_cols != rhs.size())
+    {
+      std::cout << "Shape\t" << m_cols << "\t does not match\t" << rhs.size() << '\n';
+      throw std::invalid_argument("Mismatch in arrays shapes.\n");
+    }
+
+  std::vector<std::vector<double>>::const_iterator row;  
+  std::vector<double> v(m_rows, 0.0);
+  unsigned int i = 0;
+  
+  for (row = this->m_mat.begin(); row != this->m_mat.end(); row++)
+    {
+      v[i] = (*row) * rhs;
+      i++;
+    }
+
+  return v;
+}
+
+std::vector<double> Matrix::operator*(const std::vector<double> &rhs) const
 {
   if (m_cols != rhs.size())
     {
