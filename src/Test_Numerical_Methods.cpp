@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <cmath>
+#include <cstdlib>
 
 double f(double x,double y)
 {
@@ -117,6 +118,8 @@ int main()
   sol = CG(M,F);
 
   std::cout << "Conjugate gradient reached residual of " << sol.m_fun << " after " << sol.m_evals << std::endl;
+
+  int ret = std::system("mkdir -p ./Results/TestLaplaceEquation/");
 
   std::ofstream fout("./Results/TestLaplaceEquation/u.dat");
 
