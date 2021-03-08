@@ -29,13 +29,13 @@ void build2DLaplacian(std::vector<T>& coeffs,
 		      int nx, int ny, double hx, double hy);
 
 /*
-  Assemble the matrix of the whole problem
+  Assemble the matrices of the whole problem
   TODO: add a function overload in case
         the diffusion tensor is not diagonal
 	(anisotropic diffusion) or if 
-	the diffusion is function of space
+	the diffusion is function of space (non-homogeneous)
 */
-void build_bidomain2D(SpMat& M,
+void build_bidomain2D(SpMat& A, SpMat& B, SpMat& C,
 		      const double si_x, const double se_x,
 		      const double si_y, const double se_y,
 		      const int nx, const int ny,

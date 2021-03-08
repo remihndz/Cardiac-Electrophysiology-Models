@@ -17,6 +17,7 @@ typedef Eigen::Matrix<double, Eigen::Dynamic, 3> Mesh;
    giving the position of node k
    sol[k] = sol(x_k,y_k,z_k)
 */
+
 int savevtk(std::string filename, Eigen::VectorXd& sol,
 	    Mesh& X);
 int savetxt(std::string filename, Eigen::VectorXd& sol,

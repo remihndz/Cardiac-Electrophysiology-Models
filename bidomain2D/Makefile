@@ -5,7 +5,7 @@ BUILD	 := ./build
 OBJ_DIR	 := $(BUILD)/objects
 APP_DIR	 := $(BUILD)/apps
 TARGET	 := bidomain2D
-INCLUDE	 := -Iinclude/
+INCLUDE	 := -Iinclude/ 
 SRC	 := $(wildcard src/*.cpp)
 
 OBJECTS	 := $(SRC:%.cpp=$(OBJ_DIR)/%.o)

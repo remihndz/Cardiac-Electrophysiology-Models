@@ -12,7 +12,7 @@
 #define FDM_CPP
 
 #include "fdm.h"
-
+#include <iostream>
 
 void add_coefficient(int id, const int i, const int j,
 		     double w, std::vector<T>& coeffs,
@@ -83,44 +83,27 @@ void build2DLaplacian(std::vector<T>& coeffs,
 	second order term of the equation
 	(namely ∇·(σ·∇·))
 */
-void build_bidomain2D(SpMat& M,
+void build_bidomain2D(SpMat&  A, SpMat& B, SpMat& C,
 		      const double si_x, const double se_x,
 		      const double si_y, const double se_y,
 		      const int nx, const int ny,
 		      const double hx, const double hy)
 {
-  /*     
-     M = [B1 B2], each block is a nx*ny square matrix 
-         [B3 B4]
+  /*
+    Build the semi-discrete system:
+      Aₘ(∂ₜVₘ + I(t,Vₘ)) = AVₘ + Bφₑ
+      0                  = BᵀVₘ + Cu
   */
-  std::vector<T> block;
-  build2DLaplacian(block, si_x,si_y,nx,ny,hx,hy);  
-  std::vector<T> coeffs = block;
-
-  for (int i = 0; i < block.size(); i++)
-    {
-      int row = block[i].row(), col = block[i].col() + nx*ny;
-      double val = block[i].value();
-      coeffs.push_back(T(row,col,val));
-    }
+  std::vector<T> coeffs;
   
-  for (int i = 0; i < block.size(); i++)
-    {
-      int row = block[i].row() + nx*ny, col = block[i].col();
-      double val = block[i].value();
-      coeffs.push_back(T(row,col,val));
-    }
+  build2DLaplacian(coeffs, si_x,si_y,nx,ny,hx,hy);  
 
-  build2DLaplacian(block, si_x+se_x,si_y+se_y,nx,ny,hx,hy);
-  for (int i = 0; i < block.size(); i++)
-    {
-      int row = block[i].row() + nx*ny, col = block[i].col() + nx*ny;
-      double val = block[i].value();
-      coeffs.push_back(T(row,col,val));
-    }
-    
-  M.setFromTriplets(coeffs.begin(), coeffs.end());
-  
+  A.setFromTriplets(coeffs.begin(), coeffs.end());
+  B.setFromTriplets(coeffs.begin(), coeffs.end());
+
+  coeffs.empty();
+  build2DLaplacian(coeffs, si_x+se_x, si_y+se_y, nx, ny, hx,hy);
+  C.setFromTriplets(coeffs.begin(), coeffs.end());  
 }
 
 
