@@ -24,6 +24,14 @@
 */
 
 MS::MS(){}
+MS::MS(Vec& w, Vec& vm)
+{
+  for (int i=0; i<vm.size(); i++)
+    {
+      w[i]  = 1/((vmax-vmin)*(vmax-vmin));
+      vm[i] = vmin;
+    }
+}
 
 Vec MS::g(const Vec& w, const Vec& vm)
 {
@@ -56,6 +64,7 @@ Vec MS::Iion(const Vec & w, const Vec & vm)
   G.W. BEELER and H. REUTER
 */
 
+BR::BR(){}
 BR::BR(MatW& w, Vec& vm)
 {
   InitModel(w, vm);
@@ -63,7 +72,7 @@ BR::BR(MatW& w, Vec& vm)
 
 MatW BR::g(const MatW & w, const Vec & vm)
 {
-  MatW g; // intracellular calcium concentration +
+  MatW g(vm.size(), 7); // intracellular calcium concentration +
           // 6 current/gating variables   
   
   g.col(0) =-1e-7*(i_s(vm, w).array()) + 0.07*(1e-7-w.col(0).array()); // [CA]
@@ -88,7 +97,7 @@ Vec BR::Iion(const MatW & w, const Vec & vm)
 Vec BR::Itot(const MatW & w, const Vec & vm,
 		const double t)
 {
-  return -1./cm * Iion(w, vm);
+  return Iion(w, vm);
 }
 
 void BR::InitModel(MatW & w, Vec & vm)

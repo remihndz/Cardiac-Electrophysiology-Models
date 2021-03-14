@@ -111,15 +111,15 @@ int main()
 	    }
 	}
 
-      if (t > 500 and t < 600+3*dt)
-	{
-	  for (int i = 0; i < nx*ny; i++)
-	    {
-	      double x = (i%nx)*hx, y = (i/nx)*hy;
-	      if (sqrt(x*x+pow(y-0.4,2)) < 5*hx)
-		vm[i] = 20.0;
-	    }
-	}
+      // if (t > 500 and t < 600+3*dt)
+      // 	{
+      // 	  for (int i = 0; i < nx*ny; i++)
+      // 	    {
+      // 	      double x = (i%nx)*hx, y = (i/nx)*hy;
+      // 	      if (sqrt(x*x+pow(y-0.4,2)) < 5*hx)
+      // 		vm[i] = 20.0;
+      // 	    }
+      // 	}
 	
       
       time_iter++;

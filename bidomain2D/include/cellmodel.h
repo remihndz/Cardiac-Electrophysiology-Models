@@ -46,6 +46,7 @@ class MS
   */
   
   MS();
+  MS(Vec& w, Vec& vm);
   Vec g(const Vec& w, const Vec& vm);
   Vec Iion(const Vec& w, const Vec& vm);
 };
@@ -85,6 +86,7 @@ class BR
   Vec i_Na(const Vec& vm, const MatW& w);
   Vec i_s (const Vec& vm, const MatW& w);
 
+  BR();
   BR(MatW & w, Vec& vm);
   MatW g(const MatW & w, const Vec& vm);
   Vec  Iion(const MatW & w, const Vec& vm);
