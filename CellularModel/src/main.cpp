@@ -82,9 +82,9 @@ int main()
   T.push_back(time);
   G.push_back(br.g(w,vm));
   I.push_back(br.Itot(w,vm, time));
-
+  
   ions.push_back({br.i_K1(vm), br.i_x1(vm, w), br.i_Na(vm,w), br.i_s(vm,w)});
-
+  
   std::cout << "Initial state sol = [" << vm;
   for (int i = 0; i<w.size(); i++)
     std::cout << ", " << w[i];
