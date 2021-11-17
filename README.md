@@ -7,4 +7,4 @@ The bidomain equations are frequently used to model electrical activity within t
 The last of those equations simulates the cell dynamics (excitable->action potential->refractory period->excitable). There are many choices for this set of ODEs, the simplet probably being the Mitchel and Schaeffer ([Mitchel and Schaeffer's paper](https://doi.org/10.1016/S0092-8240(03)00041-7)).
 
 # What is in this repository
-Mainly, some C++ codes to solve the bidomain equations using different methods (finite differences, finite volumes, finite elements?,...).
+Mainly, some C++ codes to solve the bidomain equations with finite differences.
